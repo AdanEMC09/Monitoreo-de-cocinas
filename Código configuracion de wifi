@@ -85,4 +85,24 @@ void loop() {
 //esperamos 8 segunodos antes de realizar la siguiente lectura
 delay(1000);
 
-int sensorValue = analogRead(sensorPin);
+int sensoresValue = analogoRead(sensorPin);
+
+float gasConcentracion = map(sensorValue, 0 , 1023, 0, 100);//porcentaje estimando
+
+//imprimit los resultados 
+Serial.print("concentración de gas (%): ");
+Serial.println(gasconcentracion);
+
+if(gasConcentracion >= 55.0 ){
+digitalWrite(pinLendRojo, HIGH); //LED rojo encendido
+digitalWrite(pinBuzzer, HIGH); //Buzzer encendido
+digitalWrite(pinLendverde, LOW); LED verde apagado
+ }
+else{
+digitalWrite(pinLendRojo, LOW);  //LED rojo apagado
+digitalWrite(pinBuzzer, LOW);  //Buzzer apagado
+digitalWrite(pinLendVerde, HIGH); //LED verdeencendido
+
+}
+delay(1000); //pausa de 3  segundo antes de realizar la próxima lectura
+}

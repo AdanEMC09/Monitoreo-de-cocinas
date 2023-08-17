@@ -1,0 +1,88 @@
+/* Programa para hacer la configuración del wifi para poder mandar los datos  
+
+#include <DHT.h>
+#include <ESP8266wiFi.h>
+#include <WiFiCliente.h>
+#include <ESP8266HTTPCliente.h>
+
+//Confifura el pin del sensor DHT11
+#define DHTPIN 4
+#define DHTTYPE DHT11
+DHT dht (DHTPIN,DHTTYPE);
+
+const char* ssid = "CC2_IoT";             // cambiar a tu nombre de la red WiFi
+const char* password = "JOSC1517";     //  Poner la Contraseña de tu red WiFi
+
+const int sensorPin = A0;    
+const int pinLedRojo = 5;  
+const int pinLedVerde = 16;  
+const int pinBuzzer = 14;  
+
+
+// Objeto para la conexión WiFi
+WiFiClient client;
+
+String data;
+
+
+void setup() {
+  //   Tu código de configuración wiFi puede ir aqui si lo necesitas 
+  
+  Serial.begin(115200);  // Iniciar  serial
+  dht.begin();
+  
+  pinMode(pinLedRojo, OUTPUT);           // Se configuran el pin del LED Rojo como salida
+  pinMode(pinLedVerde, OUTPUT);   // // Se configuran el pin del LED verde como salida
+  pinMode(pinBuzzer, OUTPUT);       // // Se configuran el pin del buzzer como salida
+
+  // //Conexión a la red WiFi
+  wiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+ Serial.println("");
+ Serial.println("se conectó al wifi");
+ Serial.println(wiFi.localIp);
+}
+
+//intenta leer los datos del sensor 
+void loop() {
+  float tem = dth.read Temperature();
+  float tem = dth.read Temperature();
+
+  data = "temprature="+String(tem)+"&humidity"+String(hum);
+
+  // preguntaremos si se conectó a la Ip del servidor  
+  if (client.connect("192.168.10.199",80)) {
+     Serial.println("se conecto");
+     client.println("POST /dth11phpmysql/backend/setData.php HTTP/1.1");
+     client.println("Host 192.168.10.199");
+     client.println("Content-Lengt: ");
+     client.println(data.length());
+     client.println();
+     client.println(data);
+    
+    
+  }
+
+ 
+  if (client.connected) {
+    
+    client.stop(); //Disconectamos del servidor
+  }
+
+
+  if (!isnan(tem) && !insan(hum)) {
+    Serial.println("temperatura: ");
+    Serial.println(tem, 1);
+    Serial.println("°C - Humedad: ");
+    Serial.println(hum, 1);
+    Serial.println(" % ");
+  } else {
+    Serial.println("Error al leer el sensor DHT11");
+  }
+//esperamos 8 segunodos antes de realizar la siguiente lectura
+delay(1000);
+
+int sensorValue = analogRead(sensorPin);

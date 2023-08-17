@@ -128,4 +128,9 @@ MYSQL
 
 Arduino
 
+# Necesitamos tener instalado  arduino 
+  Aqui mismo en githut encontraras el código en que se llama :
+  Código configuracion de wifi
+
+
 

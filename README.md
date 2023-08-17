@@ -129,6 +129,8 @@ MYSQL
 Arduino
 
 # Necesitamos tener instalado  arduino 
+
+# Posteriormente agregaremos este código para la configuracion de wifi y para que nos mida el control de gas ,temperatura .
   Aqui mismo en githut encontraras el código en que se llama :
   Código configuracion de wifi
 
